@@ -26,7 +26,7 @@ import io.fabric8.kubernetes.client.Handlers;
 
 /**
  */
-public class v1alpha1 {
+public class v1beta1 {
   private static String resourceScope(boolean resourceNamespaced) {
     if (resourceNamespaced) {
       return "Namespaced";
@@ -39,13 +39,13 @@ public class v1alpha1 {
   public static final String VOLCANO_ROLE_DRIVER = "spark-driver";
   public static final String VOLCANO_ROLE_EXECUTOR = "spark-executor";
 
-  public static final String GROUP = "scheduling.incubator.k8s.io";
+  public static final String GROUP = "scheduling.volcano.sh";
   public static final String POD_GROUP_CRD_NAME = "podgroups." + GROUP;
   public static final String POD_GROUP_KIND = "PodGroup";
   public static final String POD_GROUP_LIST_KIND = "PodGroupList";
   public static final String POD_GROUP_PLURAL = "podgroups";
   public static final String POD_GROUP_SINGULAR = "podgroup";
-  public static final String POD_GROUP_APIVERSION = "v1alpha1";
+  public static final String POD_GROUP_APIVERSION = "v1beta1";
   public static final String POD_GROUP_GROUP_APIVERSION = GROUP + "/" + POD_GROUP_APIVERSION;
 
   public static final CustomResourceDefinition PodGroupCRD = new CustomResourceDefinitionBuilder().

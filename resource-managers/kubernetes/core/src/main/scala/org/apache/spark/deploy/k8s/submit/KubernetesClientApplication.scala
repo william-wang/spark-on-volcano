@@ -153,7 +153,7 @@ private[spark] class Client(
 
           if (resource.isInstanceOf[PodGroup]) {
             val pg = resource.asInstanceOf[PodGroup]
-            val pgClient = v1alpha1.getClient(kubernetesClient, pg.getMetadata.getNamespace)
+            val pgClient = v1beta1.getClient(kubernetesClient, pg.getMetadata.getNamespace)
             pgClient.createOrReplace(pg)
           } else {
             commonResources = commonResources ++ Seq(resource)

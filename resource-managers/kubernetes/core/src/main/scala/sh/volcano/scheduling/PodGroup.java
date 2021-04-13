@@ -24,8 +24,8 @@ public class PodGroup extends CustomResource {
   private PodGroupStatus status;
 
   {
-    this.setApiVersion(v1alpha1.POD_GROUP_GROUP_APIVERSION);
-    this.setKind(v1alpha1.POD_GROUP_KIND);
+    this.setApiVersion(v1beta1.POD_GROUP_GROUP_APIVERSION);
+    this.setKind(v1beta1.POD_GROUP_KIND);
   }
 
   @Override

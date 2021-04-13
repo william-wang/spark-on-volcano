@@ -23,7 +23,7 @@ import java.util
 import scala.collection.JavaConversions._
 import scala.collection.JavaConverters._
 import io.fabric8.kubernetes.api.model.{HasMetadata, ObjectMeta, PodBuilder, Quantity, QuantityBuilder}
-import sh.volcano.scheduling.{PodGroup, PodGroupSpec, PodGroupStatus, v1alpha1}
+import sh.volcano.scheduling.{PodGroup, PodGroupSpec, PodGroupStatus, v1beta1}
 import org.apache.spark.deploy.k8s.{KubernetesConf, KubernetesDriverSpecificConf, KubernetesRoleSpecificConf, KubernetesUtils, SparkPod}
 import org.apache.spark.deploy.k8s.Config._
 
@@ -38,20 +38,20 @@ private[spark] class VolcanoFeatureStep(
 
   override def configurePod(pod: SparkPod): SparkPod = {
     val isDriver = kubernetesConf.roleSpecificConf.isInstanceOf[KubernetesDriverSpecificConf]
-    val roleName = if (isDriver) v1alpha1.VOLCANO_ROLE_DRIVER else v1alpha1.VOLCANO_ROLE_EXECUTOR
+    val roleName = if (isDriver) v1beta1.VOLCANO_ROLE_DRIVER else v1beta1.VOLCANO_ROLE_EXECUTOR
     val isClusterMode = (clusterMode == kubernetesConf.sparkConf.get(deployModeKey, clusterMode))
 
     val schedulerName = conf.get(KUBERNETES_VOLCANO_SCHEDULER_NAME)
     val k8sPodBuilder = new PodBuilder(pod.pod)
       .editMetadata()
-        .addToAnnotations(v1alpha1.VOLCANO_TASK_SPEC, roleName)
+        .addToAnnotations(v1beta1.VOLCANO_TASK_SPEC, roleName)
       .endMetadata()
       .editSpec()
         .withSchedulerName(schedulerName)
       .endSpec()
 
       k8sPodBuilder.editMetadata()
-        .addToAnnotations(v1alpha1.POD_GROUP_ANNOTATION, podGroupName)
+        .addToAnnotations(v1beta1.POD_GROUP_ANNOTATION, podGroupName)
       .endMetadata()
 
     val k8sPod = k8sPodBuilder.build()
@@ -87,6 +87,7 @@ private[spark] class VolcanoFeatureStep(
     val podGroupSpec = new PodGroupSpec()
     podGroupSpec.setMinMember(1)
     podGroupSpec.setQueue(queue)
+    podGroupSpec.setPriorityClassName("")
     podGroupSpec.setMinResources(getPodResources().asJava)
 
     val podGroupStatus = new PodGroupStatus()
